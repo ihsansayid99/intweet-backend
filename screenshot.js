@@ -16,7 +16,8 @@ module.exports = function (url) {
 
       const buffer = await page.screenshot({
         fullPage: true,
-        type: 'png'
+        type: 'png',
+        encoding: 'base64'
       })
 
       await browser.close()
