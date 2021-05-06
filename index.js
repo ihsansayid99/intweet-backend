@@ -9,8 +9,8 @@ app.get('/screenshot', (req, res) => {
   const url = req.query.url
   ;(async () => {
     const buffer = await screenshot(url)
-    res.setHeader('Content-Disposition', 'attachment; filename="screenshot.png"')
-    res.setHeader('Content-Type', 'image/png')
+    // res.setHeader('Content-Disposition', 'attachment; filename="screenshot.png"')
+    res.setHeader('Content-Type', 'application/json')
     res.send(buffer)
   })()
 })
