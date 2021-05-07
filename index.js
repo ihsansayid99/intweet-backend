@@ -27,8 +27,12 @@ app.post('/api/screenshot', async (req, res, next) => {
     if (!req.body.url) {
         return res.end('Please specify url like this: ?url=example.com');
     }
+    const splitTweetUrl = url.split('/')
+    const lastItem = splitTweetUrl[splitTweetUrl.length - 1]
+    const splitLastItem = lastItem.split('?')
+    const tweetId = splitLastItem[0]
     try{
-        const screenshot = await takeScreenshot(url)
+        const screenshot = await takeScreenshot(tweetId)
         // res.writeHead(200, {
         //     'Content-Type': 'application/json',
         //     'Content-Length': screenshot.length
@@ -46,12 +50,32 @@ app.post('/api/screenshot', async (req, res, next) => {
 })
 
 async function takeScreenshot(url) {
+
     const browser = await puppeteer.launch({ 
        headless: true,
        args: ['--no-sandbox'] 
      });
     const page = await browser.newPage();
-    await page.goto(url, { waitUntil: 'networkidle0' });
+    await page.goto(`https://platform.twitter.com/embed/index.html?dnt=true&embedId=twitter-widget-0&frame=false&hideCard=true&hideThread=false&id=${url}&lang=id&theme=light&widgetsVersion=ed20a2b%3A1601588405575`, { waitUntil: 'networkidle0' });
+    const embedDefaultWidth = 550
+    const percent = 1000 / embedDefaultWidth
+    const pageWidth = embedDefaultWidth
+    const pageHeight = 100
+    await page.setViewport({ width: pageWidth, height: pageHeight })
+    await page.evaluate(props => {
+        const { percent } = props
+  
+        const style = document.createElement('style')
+        style.innerHTML = "* { font-family: -apple-system, BlinkMacSystemFont, Ubuntu, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol' !important; }"
+        document.getElementsByTagName('head')[0].appendChild(style)
+  
+        const body = document.querySelector('body')
+        body.style.padding = `5px`
+        body.style.backgroundColor = '#fff'
+        const articleWrapper = document.querySelector('#app > div')
+        articleWrapper.style.border = 'none'
+      }, ({ percent }))
+
     const screenShot = await page.screenshot({
         fullPage: true,
         type: 'png',
