@@ -70,7 +70,6 @@ async function takeScreenshot(url) {
         document.getElementsByTagName('head')[0].appendChild(style)
   
         const body = document.querySelector('body')
-        body.style.padding = `5px`
         body.style.backgroundColor = '#fff'
         const articleWrapper = document.querySelector('#app > div')
         articleWrapper.style.border = 'none'
