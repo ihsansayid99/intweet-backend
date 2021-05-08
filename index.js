@@ -61,7 +61,7 @@ async function takeScreenshot(url) {
     const percent = 1000 / embedDefaultWidth
     const pageWidth = embedDefaultWidth
     const pageHeight = 100
-    await page.setViewport({ width: pageWidth, height: pageHeight })
+    await page.setViewport({ width: pageWidth, height: pageHeight, deviceScaleFactor: 2 })
     await page.evaluate(props => {
         const { percent } = props
   
