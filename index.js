@@ -56,7 +56,7 @@ async function takeScreenshot(url) {
        args: ['--no-sandbox'] 
      });
     const page = await browser.newPage();
-    await page.goto(`https://platform.twitter.com/embed/index.html?dnt=true&embedId=twitter-widget-0&frame=false&hideCard=true&hideThread=false&id=${url}&lang=id&theme=light&widgetsVersion=ed20a2b%3A1601588405575`, { waitUntil: 'networkidle0' });
+    await page.goto(`https://platform.twitter.com/embed/index.html?dnt=true&embedId=twitter-widget-0&frame=false&hideThread=false&id=${url}&lang=id&theme=light&widgetsVersion=ed20a2b%3A1601588405575`, { waitUntil: 'networkidle0' });
     const embedDefaultWidth = 550
     const percent = 1000 / embedDefaultWidth
     const pageWidth = embedDefaultWidth
